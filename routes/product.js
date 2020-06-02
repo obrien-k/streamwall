@@ -60,13 +60,13 @@ router.get('/products/update', (req, res) => {
             try {
               hashtable.forEach((k,v) =>{ v = JSON.stringify(v); });
               hashtable.forEach((k,v) =>{
-                v['value'].forEach((e) =>{
+                v['value'].forEach((g) =>{
                   // These if statements are likely both true, should be tested further.
-                  if (e.hasOwnProperty('id')) {
-                    delete e['id'];
-                    delete e['brand_id'];
-                    delete e['option_set_id'];
-                    delete e['option_set_display'];
+                  if (g.hasOwnProperty('id')) {
+                    delete g['id'];
+                    delete g['brand_id'];
+                    delete g['option_set_id'];
+                    delete g['option_set_display'];
                 }
                   
                   /* Though this is true for variants without the array populated,
@@ -79,9 +79,9 @@ router.get('/products/update', (req, res) => {
                   which also resolved the comment on line 49. To verify this, pages should be iterated
                   to ensure each work as it requires hard coding to change the page*/
   
-                  if(e.hasOwnProperty('option_values')){
+                  if(g.hasOwnProperty('option_values')){
                     // Assign the option_values array of the current value to 'o'
-                    o = e.option_values;
+                    o = g.option_values;
                     console.log('o')
                     o.forEach((f) =>{
                       if (err) throw err;
@@ -91,15 +91,17 @@ router.get('/products/update', (req, res) => {
                     })
                     
                   }
-                  e = JSON.stringify(e);
-                  Product.collection.insertOne(e + ',', function(err, res) {
-                    if (err) throw err;
-                    console.log(
-                      'Number of documents inserted: ' + res.insertedCount
-                    );
+                const context = {}
+                context.data = g;
+                Product.collection.insertOne(context , function(err, res) {
+                  if (err) throw err;
+                  console.log(
+                    'Number of documents inserted: ' + res.insertedCount
+                  );
                   });
                 })
               });
+              
             }
             catch(err) {
               console.log(err + 'line 87');
