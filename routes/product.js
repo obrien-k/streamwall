@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product.js');
 BigCommerce = require('node-bigcommerce');
-const Wishlist = require('../models/Wishlist.js');
+const HashTable = require('hashtable');
 
 const bigCommerce = new BigCommerce({
   logLevel: 'info',
@@ -22,7 +22,7 @@ router.get('/products', (req, res) => {
       res.redirect('/');
     } else {
       res.render('index', {
-        title: 'Welcome to Whisklist | View Products',
+        title: 'MVC Example | View Products',
         products: allProducts
       });
     }
@@ -30,104 +30,94 @@ router.get('/products', (req, res) => {
 });
 router.get('/products/update', (req, res) => {
   res.render('index', { message: 'Updating' });
-  const getProducts = new Promise(async function(resolve, reject) {
-    bigCommerce.get('/catalog/products').then(data => {
-      Arr = data.data;
-      let pArr = [];
-      for ([key, value] of Object.entries(Arr)) {
-        if (value.id) {
-          pArr.push(value.id);
+  const getProducts = new Promise(async function(resolve) {
+    try{
+     bigCommerce.get('/catalog/products').then(data => {
+        console.log('RUNNING...')
+        /* Retrieves the Catalog API Products Endpoint and assigns each of the returned objects' IDs to 
+        the array 'pArr' */
+        Arr = data.data;
+        let pArr = [];
+        for ([key, value] of Object.entries(Arr)) {
+          if (value.id) {
+            pArr.push(value.id);
+          }
         }
-      }
-      console.log(pArr);
-      e();
-      async function e() {
-        for (i = 0; i < pArr.length; i++) {
-          await bigCommerce.get('/catalog/products/' + pArr[i]).then(data => {
-            prodArr = [];
-            prodArr = data.data;
-            pId = prodArr.id;
-            console.log(pId);
-            Wishlist.collection.find(
-              { 'items.product_id': pId },
-              null,
-              function(err, docs) {
-                if (docs) {
-                  wIdArr = [];
-                  docs.forEach(element => {
-                    for ([key, value] of Object.entries(element)) {
-                      if (key === 'id' && wIdArr.includes(value) != true) {
-                        wIdArr.push(value);
-                      }
-                    }
-                    Product.collection.findOne({ id: pId }, null, function(
-                      err,
-                      docs
-                    ) {
-                      if (err) throw err;
-                      if (docs != null) {
-                        console.log(pId + 'LINE 169');
-                        console.log(wIdArr + 'LINE 170');
-                        wIdArr.forEach(element => {
-                          console.log(element);
-                          Product.collection.findOne(
-                            { id: pId, 'wishlists.id': element },
-                            null,
-                            function(err, docs) {
-                              if (err) throw err;
-                              if (docs == null) {
-                                Product.collection.findOneAndUpdate(
-                                  { id: pId },
-                                  { $push: { wishlists: { id: element } } },
-                                  function(err, docs) {
-                                    if (err) throw err;
-                                    else {
-                                      console.log(
-                                        'Number of inserted Products: ' +
-                                          docs.insertedCount
-                                      );
-                                    }
-                                  }
-                                );
-                              }
-                              if (docs != null) {
-                                console.log(
-                                  element + ' wishlist already saved to product'
-                                );
-                              }
-                            }
-                          );
-                        });
-                      }
-                      if (docs == null) {
-                        Product.collection.insertOne(prodArr, null, function(
-                          err,
-                          docs
-                        ) {
-                          if (err) throw err;
-                          if (docs) {
-                            console.log(
-                              'Number of inserted Products: ' +
-                                docs.insertedCount
-                            );
-                          }
-                        });
-                      }
-                    });
-                  });
-                  console.log(wIdArr);
-                } else {
-                  return reject(err);
+        // A nested asynchronous function, run for the length of pArr
+        e();
+        async function e(res) {
+          for (i = 0; i < pArr.length; i++) {
+            s = [];
+            await bigCommerce.get('/catalog/products/' + pArr[i] + "/?include=variants").then(data => {
+              prodArr = data.data;
+              v = [prodArr];
+              v.forEach(element => s.push(element))
+              return res;
+            });
+            
+            hashtable = new HashTable();
+            hashtable.put('data', {value: s});
+            try {
+              hashtable.forEach((k,v) =>{ v = JSON.stringify(v); });
+              hashtable.forEach((k,v) =>{
+                v['value'].forEach((e) =>{
+                  // These if statements are likely both true, should be tested further.
+                  if (e.hasOwnProperty('id')) {
+                    delete e['id'];
+                    delete e['brand_id'];
+                    delete e['option_set_id'];
+                    delete e['option_set_display'];
                 }
-              }
-            );
-          });
-        }
+                  
+                  /* Though this is true for variants without the array populated,
+                  this causes an error: TypeError: v.forEach is not a function */
+  
+                  /* This can be worked around by manually setting the product ID in the original 
+                  get request to BigCommerce and should be fixed long-term*/
+  
+                  /* I may have resolved this by using [prodArr] instead of prodArr on line 38
+                  which also resolved the comment on line 49. To verify this, pages should be iterated
+                  to ensure each work as it requires hard coding to change the page*/
+  
+                  if(e.hasOwnProperty('option_values')){
+                    // Assign the option_values array of the current value to 'o'
+                    o = e.option_values;
+                    console.log('o')
+                    o.forEach((f) =>{
+                      if (err) throw err;
+                      delete f['id'];
+                      delete f['option_id'];
+                      console.log('value is: ' + JSON.stringify(f));
+                    })
+                    
+                  }
+                  e = JSON.stringify(e);
+                  Product.collection.insertOne(e + ',', function(err, res) {
+                    if (err) throw err;
+                    console.log(
+                      'Number of documents inserted: ' + res.insertedCount
+                    );
+                  });
+                })
+              });
+            }
+            catch(err) {
+              console.log(err + 'line 87');
+              return err;
+            }
+            
+            console.log('DONE line 91')
+            }
+           
       }
-    });
-    return resolve();
-  }).catch(err => {
-    console.log('getProducts rejected' + err);
+     });
+     console.log('log before return resolve line 96')
+     return resolve;
+    }
+      catch(err){
+        console.log(err + 'line 100');
+        return err;
+      }
   });
   getProducts;
 });

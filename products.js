@@ -10,7 +10,7 @@ mongoose = require('mongoose');
   (hbs = exphbs.create({
     /* config */
   }));
-  const HashTable = require('hashtable');
+const HashTable = require('hashtable');
 
 const productRoute = require('./routes/product');
 const Product = require('./models/Product.js');
