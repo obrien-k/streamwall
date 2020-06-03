@@ -3,17 +3,17 @@ require('dotenv').config();
 const express = require('express'),
   router = express.Router(),
   BigCommerce = require('node-bigcommerce');
-bodyParser = require('body-parser');
-exphbs = require('express-handlebars');
-mongoose = require('mongoose');
-(app = express()),
+  bodyParser = require('body-parser');
+  exphbs = require('express-handlebars');
+  mongoose = require('mongoose');
+  (app = express()),
   (hbs = exphbs.create({
     /* config */
   }));
   const HashTable = require('hashtable');
 
-const productRoute = require('./routes/product');
-const Product = require('./models/Product.js');
+  const productRoute = require('./routes/product');
+  const Product = require('./models/Product.js');
 
 const server = app.listen(process.env.PORT, () => {
   console.log('Express listening at ', server.address().port);
@@ -61,7 +61,7 @@ app.get('/', function(req, res) {
           } else {
             res.render('index', {
               title: 'MVC Example',
-              products: allProducts
+              Products: allProducts
             });
           }
         });

@@ -23,7 +23,7 @@ router.get('/products', (req, res) => {
     } else {
       res.render('index', {
         title: 'MVC Example | View Products',
-        products: allProducts
+        Products: allProducts
       });
     }
   });
@@ -93,7 +93,7 @@ router.get('/products/update', (req, res) => {
                   }
                 const context = {}
                 context.data = g;
-                Product.collection.insertOne(context , function(err, res) {
+                Product.collection.insertOne(context.data , function(err, res) {
                   if (err) throw err;
                   console.log(
                     'Number of documents inserted: ' + res.insertedCount
@@ -123,6 +123,9 @@ router.get('/products/update', (req, res) => {
   });
   getProducts;
 });
+
+// These routes are actually useless, but could be used in future iterations.
+
 router.post('/products/add', (req, res) => {
   let message = '';
   let id = req.body.id;
