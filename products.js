@@ -37,12 +37,7 @@ const bigCommerce = new BigCommerce({
 app.engine(
   '.hbs',
   exphbs({
-    extname: '.hbs',
-    helpers: {
-      toJSON: function(object) {
-        return JSON.stringify(object);
-      }
-    }
+    extname: '.hbs'
   })
 );
 mongoose.set('debug', true);

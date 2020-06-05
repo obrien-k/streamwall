@@ -63,6 +63,7 @@ router.get('/products/update', (req, res) => {
                 v['value'].forEach((g) =>{
                   // These if statements are likely both true, should be tested further.
                   if (g.hasOwnProperty('id')) {
+                    console.log("EXECUTE LINE 66");
                     delete g['id'];
                     delete g['brand_id'];
                     delete g['option_set_id'];
@@ -93,7 +94,16 @@ router.get('/products/update', (req, res) => {
                   }
                 const context = {}
                 context.data = g;
-                Product.collection.insertOne(context.data , function(err, res) {
+                const newProduct = {}
+                newProduct.name = context.data.name;
+                newProduct.type = context.data.type;
+                newProduct.sku = context.data.sku;
+                newProduct.slug = context.data.custom_url.url;
+                newProduct.variants = context.data.variants;
+                newProduct.date_modified = context.data.date_modified;
+
+                console.log(newProduct);
+                Product.collection.insertOne(newProduct , function(err, res) {
                   if (err) throw err;
                   console.log(
                     'Number of documents inserted: ' + res.insertedCount
@@ -151,7 +161,7 @@ router.get('/products/:id', (req, res) => {
     }
     res.render('index', {
       title: 'Edit Product',
-      product: ret,
+      Product: ret,
       message: ''
     });
   });
