@@ -7,10 +7,18 @@
 <a href="/products/update">Update Products</a>
 
 <h3>Products</h3>
+
 {{#each Products}}
-{{name}}
+
+<h4><a href="{{_id}}">{{name}}</a></h4>
+
 {{sku}}
 
+{{type}}
+{{#each variants}}
+{{#each option_values}}
+<strong>{{option_display_name}}</strong>: <em>{{label}}</em>
 
-{{this}}
+{{/each}}
+{{/each}}
 {{/each}}
