@@ -1,0 +1,30 @@
+<a href="/">
+  <h2>MVC Example</h2>
+</a></br>
+{{#if message}}
+<p class="text-center text-danger">{{message}}</p>
+{{/if}}
+<a href="/">Go Back</a>
+
+{{#if Product}}
+<div id="productDetails" style="max-height:30%;max-width:80%;">
+<h3>{{Product.name}}</h3>
+
+{{Product.type}}
+{{#each Product.variants}}
+<ul>
+{{#if image_url}}
+<li><img src="{{image_url}}" style="max-width: 250px; max-height:250px" /></li>
+{{else}}
+{{/if}}
+</ul>
+
+{{#each option_values}}
+<strong>{{option_display_name}}</strong>: <em>{{label}}</em>
+{{/each}}
+{{/each}}
+
+
+</div>
+{{/if}}
+

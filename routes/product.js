@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+// Change to base branch test
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product.js');
@@ -28,6 +28,20 @@ router.get('/products', (req, res) => {
     }
   });
 });
+router.get('/:id', (req, res) => {
+  let productId = req.params.id;
+
+  Product.findOne({_id: productId}).exec((err, ret) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.render('product_details', {
+      title: 'Product Details',
+      Product: ret,
+      message: ''
+    });
+  });
+})
 router.get('/products/update', (req, res) => {
   res.render('index', { message: 'Updating' });
   const getProducts = new Promise(async function(resolve) {
