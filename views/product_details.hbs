@@ -14,13 +14,12 @@
 {{#each Product.variants}}
 <ul>
 {{#if image_url}}
-<li><img src="{{image_url}}" style="max-width: 150px; max-height:200px" /></li>
+<li><img src="{{image_url}}" style="max-width: 250px; max-height:250px" /></li>
 {{else}}
-
 {{/if}}
 </ul>
-{{#each option_values}}
 
+{{#each option_values}}
 <strong>{{option_display_name}}</strong>: <em>{{label}}</em>
 {{/each}}
 {{/each}}
