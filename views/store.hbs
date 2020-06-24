@@ -1,0 +1,27 @@
+<a href="/">
+  <h2>MVC Example - {{Store.name}} Store Info</h2>
+</a></br>
+
+{{#if message}}
+<p class="text-center text-danger">{{message}}</p>
+{{/if}}
+<a href="/">Go Back</a>
+<a href="/store/{{Store.storeId}}update">Update Store Info</a>
+{{#if Store}}
+
+{{link Store.storeId productId}}
+<div id="productDetails" style="max-height:30%;max-width:80%;">
+<strong>Store Name</strong>: <em>{{Store.name}}</em>
+<strong>Store ID</strong>: <p>{{Store.storeId}}</p>
+<strong>Store domain</strong>:{{Store.domain}}
+<strong>Store secure url</strong>:{{Store.secure_url}}
+<strong>Store control panel</strong>:{{Store.control_panel_base_url}}
+<h4><a href="http://store-.mybigcommerce.com/cart.php?action=add&product_id=">Store Domain Buy</a></h4>
+<ul>
+<li><strong>Store status</strong>:{{Store.status}}</li>
+</ul>
+
+
+</div>
+{{/if}}
+
