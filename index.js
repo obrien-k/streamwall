@@ -69,10 +69,18 @@ app.get('/', function(req, res) {
           if (err) {
             console.log(err);
           } else {
-            res.render('index', {
-              title: 'MVC Example',
-              Products: allProducts
-            });
+            Store.find({}, (err, allStores) => {
+              if(err){
+                console.log(err);
+              } else {
+                res.render('index', {
+                  title: 'MVC Example',
+                  Products: allProducts,
+                  Stores: allStores
+                });
+              }
+            })
+            
           }
         });
   } catch (err) {

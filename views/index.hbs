@@ -6,8 +6,12 @@
 {{/if}}
 <a href="/products/update">Update Products</a>
 <a href="/store/">Store Info</a>
-<h3>Products</h3>
-
+{{Stores.0.storeId}}
+<h3>Products</h3><h4><a href="{{{link Store.storeId productId}}}">Store Domain Buy</a></h4>
+{{#each Stores}}
+{{name}}
+{{this}}
+{{/each}}
 {{#each Products}}
 
 <h4><a href="{{_id}}">{{name}}</a></h4>
@@ -18,7 +22,6 @@
 {{#each variants}}
 {{#each option_values}}
 <strong>{{option_display_name}}</strong>: <em>{{label}}</em>
-
 {{/each}}
 {{/each}}
 {{/each}}
