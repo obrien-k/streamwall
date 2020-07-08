@@ -1,5 +1,4 @@
 require('dotenv').config();
-// Change to base branch test
 const express = require('express');
 const router = express.Router();
 const Store = require('../models/Store.js');
@@ -28,20 +27,6 @@ router.get('/store', (req, res) => {
     }
   });
 });
-router.get('/store/:storeId', (req, res) => {
-  let storeId = req.params.storeId;
-
-  Store.findOne({storeId: storeId}).exec((err, ret) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-    res.render('store', {
-      title: 'Store Details',
-      Store: ret,
-      message: ''
-    });
-  });
-})
 router.get('/store/update', (req, res) => {
   res.render('index', { message: 'Updating' });
   const getStoreInfo = new Promise(async function() {
@@ -51,7 +36,7 @@ router.get('/store/update', (req, res) => {
         const context = {}
                 context.data = data;
                 const newStore = {}
-                newStore.storeId = context.data.id;
+                newStore.store_id = context.data.id;
                 newStore.domain = context.data.domain;
                 newStore.secure_url = context.data.secure_url;
                 newStore.control_panel_base_url = context.data.base_url;
@@ -74,5 +59,21 @@ router.get('/store/update', (req, res) => {
   });
   getStoreInfo;
 });
+router.get('/store/:storeId', (req, res) => {
+  let storeId = req.params.storeId;
+
+  Store.findOne({store_id: storeId}).exec((err, ret) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.render('store', {
+      title: 'Store Details',
+      Store: ret,
+      storeId: ret.storeId,
+      message: ''
+    });
+  });
+})
+
 
 module.exports = router;

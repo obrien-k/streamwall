@@ -69,7 +69,7 @@ app.get('/', function(req, res) {
           if (err) {
             console.log(err);
           } else {
-            Store.find({}, (err, allStores) => {
+            Store.findOne({}, (err, allStores) => {
               if(err){
                 console.log(err);
               } else {
