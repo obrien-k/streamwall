@@ -12,15 +12,18 @@ const express = require('express'),
   }));
   const HashTable = require('hashtable');
 
-  const productRoute = require('./routes/product');
-  const Product = require('./models/Product.js');
+  const productRoute = require('./routes/Product');
+  const Product = require('./models/Product.js');  
+  const storeRoute = require('./routes/Store');
+  const Store = require('./models/Store.js');
+  
 
 const server = app.listen(process.env.PORT, () => {
   console.log('Express listening at ', server.address().port);
 });
 
 // MongoDB setup
-mongoose.connect(process.env.MONGO, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const bigCommerce = new BigCommerce({
   logLevel: 'info',
@@ -40,7 +43,13 @@ app.engine(
     helpers: {
       toJSON: function(object) {
         return JSON.stringify(object);
-      }
+      },
+      link: function(thisStore, thisProduct) {
+        let Store = thisStore,
+            Product = thisProduct;
+            
+       return("<a href='http://store-" + Store + ".mybigcommerce.com/cart.php?action=add&product_id=" + Product + "'>");
+    }
     }
   })
 );
@@ -49,6 +58,7 @@ app.set('view engine', '.hbs');
 app.set('views', __dirname + '/views');
 app.use(bodyParser.json());
 app.use(productRoute);
+app.use(storeRoute);
 
 // ROUTES
 app.get('/', function(req, res) {
@@ -59,10 +69,18 @@ app.get('/', function(req, res) {
           if (err) {
             console.log(err);
           } else {
-            res.render('index', {
-              title: 'MVC Example',
-              Products: allProducts
-            });
+            Store.findOne({}, (err, allStores) => {
+              if(err){
+                console.log(err);
+              } else {
+                res.render('index', {
+                  title: 'MVC Example',
+                  Products: allProducts,
+                  Stores: allStores
+                });
+              }
+            })
+            
           }
         });
   } catch (err) {
