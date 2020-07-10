@@ -39,7 +39,24 @@ const bigCommerce = new BigCommerce({
 app.engine(
   '.hbs',
   exphbs({
-    extname: '.hbs'
+    extname: '.hbs',
+    helpers: {
+      toJSON: function(object) {
+        return JSON.stringify(object);
+      },
+      link: function(thisStore, thisProduct) {
+        let Store = thisStore,
+            Product = thisProduct;
+            
+       return("http://store-" + Store + ".mybigcommerce.com/cart.php?action=add&product_id=" + Product);
+    },
+    linkSku: function(thisStore, thisProduct) {
+      let Store = thisStore,
+          Product = thisProduct;
+          
+     return("<a href='http://store-" + Store + ".mybigcommerce.com/cart.php?action=add&sku=" + Product + "'>");
+  }
+    }
   })
 );
 mongoose.set('debug', true);
@@ -58,7 +75,7 @@ app.get('/', function(req, res) {
           if (err) {
             console.log(err);
           } else {
-            Store.findOne({}, (err, allStores) => {
+            Store.find({}, (err, allStores) => {
               if(err){
                 console.log(err);
               } else {

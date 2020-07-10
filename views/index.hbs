@@ -6,8 +6,8 @@
 {{/if}}
 <a href="/products/update">Update Products</a>
 {{#each Stores}}
-{{#if this.store_id}}
-<a href="/store/{{this.store_id}}" + >{{{this.domain}}} Store Info</a>
+{{#if hash}}
+<a href="/store/{{hash}}" + >{{{domain}}} Store Info</a>
 {{/if}}
 {{#else}}
 

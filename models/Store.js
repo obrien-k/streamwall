@@ -5,7 +5,7 @@ const ObjectId = Schema.ObjectId;
 
 const StoreSchema = new Schema({
   _id: ObjectId,
-  id: String,
+  hash: String,
   domain: String,
   secure_url: String,
   control_panel_base_url: String,

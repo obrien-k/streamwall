@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product.js');
+const Store = require('../models/Store.js');
 BigCommerce = require('node-bigcommerce');
 const HashTable = require('hashtable');
 
@@ -30,16 +31,25 @@ router.get('/products', (req, res) => {
 });
 router.get('/:id', (req, res) => {
   let productId = req.params.id;
-
+  let r = JSON.stringify(req.params);
+  console.log(r + 'requestVal');
   Product.findOne({_id: productId}).exec((err, ret) => {
     if (err) {
       return res.status(500).send(err);
+    } else {
+      Store.findOne({}, (err, Store) => {
+        if(err){
+          console.log(err);
+        } else {
+          res.render('product_details', {
+            title: 'Product Details',
+            Product: ret,
+            Store: Store
+          });
+        }
+      })
+      
     }
-    res.render('product_details', {
-      title: 'Product Details',
-      Product: ret,
-      message: ''
-    });
   });
 })
 router.get('/products/update', (req, res) => {
@@ -78,7 +88,6 @@ router.get('/products/update', (req, res) => {
                   // These if statements are likely both true, should be tested further.
                   if (g.hasOwnProperty('id')) {
                     console.log("EXECUTE LINE 66");
-                    delete g['id'];
                     delete g['brand_id'];
                     delete g['option_set_id'];
                     delete g['option_set_display'];
@@ -110,6 +119,7 @@ router.get('/products/update', (req, res) => {
                 context.data = g;
                 const newProduct = {}
                 newProduct.name = context.data.name;
+                newProduct.product_id = context.data.id;
                 newProduct.type = context.data.type;
                 newProduct.sku = context.data.sku;
                 newProduct.slug = context.data.custom_url.url;

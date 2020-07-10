@@ -1,25 +1,28 @@
 <a href="/">
   <h2>MVC Example</h2>
 </a></br>
-<script>let storeInfo = {{Store}}
 
-</script>
-
-<script>console.log(storeInfo)</script>
 {{#if message}}
 <p class="text-center text-danger">{{message}}</p>
 {{/if}}
 <a href="/">Go Back</a>
-
+{{Store}}
 {{#if Product}}
-
 
 <div id="productDetails" style="max-height:30%;max-width:80%;">
 <h3>{{Product.name}}</h3>
 
 {{Product.type}}
+{{#if Store}}
+{{Store}}
+{{Product}}
+<h4><a href="{{link Store.hash Product.product_id}}">Buy Now</a></h4>
+{{/if}}
 {{#each Product.variants}}
-<h4><a href="http://store-" store_hash ".mybigcommerce.com/cart.php?action=add&product_id={{product_id}}">Buy Now</a></h4>
+
+<h4><a href="{{link Store.hash sku}}">Buy Now</a></h4>
+
+
 <ul>
 {{#if image_url}}
 <li><img src="{{image_url}}" style="max-width: 250px; max-height:250px" /></li>
@@ -29,6 +32,8 @@
 
 {{#each option_values}}
 <strong>{{option_display_name}}</strong>: <em>{{label}}</em>
+
+
 {{/each}}
 {{/each}}
 

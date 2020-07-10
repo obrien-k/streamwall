@@ -36,10 +36,9 @@ router.get('/store/update', (req, res) => {
         const context = {}
                 context.data = data;
                 const newStore = {}
-                newStore.store_id = context.data.id;
+                newStore.hash = context.data.id;
                 newStore.domain = context.data.domain;
                 newStore.secure_url = context.data.secure_url;
-                newStore.control_panel_base_url = context.data.base_url;
                 newStore.status = context.data.status;
                 newStore.name = context.data.name;
 
@@ -62,7 +61,7 @@ router.get('/store/update', (req, res) => {
 router.get('/store/:storeId', (req, res) => {
   let storeId = req.params.storeId;
 
-  Store.findOne({store_id: storeId}).exec((err, ret) => {
+  Store.findOne({hash: storeId}, {_id:0}).exec((err, ret) => {
     if (err) {
       return res.status(500).send(err);
     }
