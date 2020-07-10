@@ -149,18 +149,19 @@ router.get('/products/update', (req, res) => {
               
             }
             catch(err) {
-              console.log(err + 'line 87');
+              console.log(err + 'line 152');
               return err;
             }
             
-            console.log('DONE line 91')
+            console.log('DONE with for loop from line 73')
             }
            
       }
      });
-     console.log('log before return resolve line 96')
-     return resolve;
+     console.log('log before try close line 58')
+
     }
+    
       catch(err){
         console.log(err + 'line 100');
         return err;

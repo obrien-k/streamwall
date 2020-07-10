@@ -6,7 +6,7 @@
 <p class="text-center text-danger">{{message}}</p>
 {{/if}}
 <a href="/">Go Back</a>
-{{Store}}
+
 {{#if Product}}
 
 <div id="productDetails" style="max-height:30%;max-width:80%;">
@@ -14,10 +14,9 @@
 
 {{Product.type}}
 {{#if Store}}
-{{Store}}
-{{Product}}
 <h4><a href="{{link Store.hash Product.product_id}}">Buy Now</a></h4>
 {{/if}}
+
 {{#each Product.variants}}
 
 <h4><a href="{{link Store.hash sku}}">Buy Now</a></h4>

@@ -62,6 +62,7 @@ app.engine(
 mongoose.set('debug', true);
 app.set('view engine', '.hbs');
 app.set('views', __dirname + '/views');
+app.use(express.static('views/images')); 
 app.use(bodyParser.json());
 app.use(productRoute);
 app.use(storeRoute);
