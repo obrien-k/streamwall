@@ -39,18 +39,7 @@ const bigCommerce = new BigCommerce({
 app.engine(
   '.hbs',
   exphbs({
-    extname: '.hbs',
-    helpers: {
-      toJSON: function(object) {
-        return JSON.stringify(object);
-      },
-      link: function(thisStore, thisProduct) {
-        let Store = thisStore,
-            Product = thisProduct;
-            
-       return("<a href='http://store-" + Store + ".mybigcommerce.com/cart.php?action=add&product_id=" + Product + "'>");
-    }
-    }
+    extname: '.hbs'
   })
 );
 mongoose.set('debug', true);

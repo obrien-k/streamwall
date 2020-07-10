@@ -1,5 +1,5 @@
 require('dotenv').config();
-// Change to base branch test
+
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product.js');
@@ -117,12 +117,23 @@ router.get('/products/update', (req, res) => {
                 newProduct.date_modified = context.data.date_modified;
 
                 console.log(newProduct);
-                Product.collection.insertOne(newProduct , function(err, res) {
-                  if (err) throw err;
-                  console.log(
-                    'Number of documents inserted: ' + res.insertedCount
-                  );
-                  });
+                Product.collection.findOne({ name: newProduct.name }, null, function(
+                  err,
+                  docs
+                ) {
+                  if (docs === null) {
+                    Product.collection.insertOne(newProduct , function(err, res) {
+                      if (err) throw err;
+                      console.log(
+                        'Number of documents inserted: ' + res.insertedCount
+                      );
+                      });
+                    if (err) throw err;
+                  } else {
+                    console.log(newProduct.name + " is already inserted");
+                  }
+                });
+                
                 })
               });
               
