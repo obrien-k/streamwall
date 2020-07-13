@@ -1,7 +1,7 @@
 {
-  "name": "whisklist",
+  "name": "bc-mvc",
   "version": "0.0.1",
-  "description": "bigcommerce wishlist management app",
+  "description": "bigcommerce mvc example",
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -23,16 +23,19 @@
     "url": "git+https://github.com/webbhostnet/whisklist.git"
   },
   "keywords": [
-    "wishlist",
+    "mvc",
     "bigcommerce",
     "node",
     "express",
-    "mongo"
+    "mongo",
+    "model",
+    "view",
+    "controller"
   ],
   "author": "Kyle O'Brien",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/webbhostnet/whisklist/issues"
+    "url": "https://github.com/obrien-k/bc-mvc/issues"
   },
-  "homepage": "https://github.com/webbhostnet/whisklist#readme"
+  "homepage": "https://github.com/obrien-k/bc-mvc#readme"
 }
