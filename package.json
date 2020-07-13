@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webbhostnet/whisklist.git"
+    "url": "git+https://github.com/obrien-k/bc-mvc.git"
   },
   "keywords": [
     "mvc",
