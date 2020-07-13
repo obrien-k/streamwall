@@ -149,7 +149,6 @@ router.get('/products/update', (req, res) => {
               
             }
             catch(err) {
-              console.log(err + 'line 152');
               return err;
             }
             
@@ -161,13 +160,29 @@ router.get('/products/update', (req, res) => {
      console.log('log before try close line 58')
 
     }
-    
+
       catch(err){
         console.log(err + 'line 100');
         return err;
       }
   });
   getProducts;
+});
+
+
+router.get('/products/:id', (req, res) => {
+  let productId = req.params.id;
+
+  Product.findById(productId).exec((err, ret) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.render('index', {
+      title: 'Edit Product',
+      Product: ret,
+      message: ''
+    });
+  });
 });
 
 // These routes are actually useless, but could be used in future iterations.
@@ -186,20 +201,6 @@ router.post('/products/add', (req, res) => {
       console.log(newlyCreated);
       res.redirect('/');
     }
-  });
-});
-router.get('/products/:id', (req, res) => {
-  let productId = req.params.id;
-
-  Product.findById(productId).exec((err, ret) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-    res.render('index', {
-      title: 'Edit Product',
-      Product: ret,
-      message: ''
-    });
   });
 });
 router.post('/products/edit/:id', (req, res) => {

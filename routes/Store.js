@@ -43,12 +43,25 @@ router.get('/store/update', (req, res) => {
                 newStore.name = context.data.name;
 
                 console.log(newStore);
-                Store.collection.insertOne(newStore , function(err, res) {
-                  if (err) throw err;
-                  console.log(
-                    'Number of documents inserted: ' + res.insertedCount
-                  );
-                  });
+                Store.collection.findOne({ hash: newStore.hash }, null, function(
+                  err,
+                  docs
+                ) {
+                  if (docs === null) {
+                    Store.collection.insertOne(newStore , function(err, res) {
+                      if (err) throw err;
+                      console.log(
+                        'Number of documents inserted: ' + res.insertedCount
+                      );
+                      });
+                      if (err) throw err;
+                  }
+                  else {
+                    console.log(newStore.name + " is already inserted");
+                  }
+                } 
+                )
+                
                 })
               }
       catch(err){
