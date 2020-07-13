@@ -10,11 +10,10 @@ const express = require('express'),
   (hbs = exphbs.create({
     /* config */
   }));
-  const HashTable = require('hashtable');
 
-  const productRoute = require('./routes/Product');
+  const productRoute = require('./routes/product');
   const Product = require('./models/Product.js');  
-  const storeRoute = require('./routes/Store');
+  const storeRoute = require('./routes/store');
   const Store = require('./models/Store.js');
   
 
