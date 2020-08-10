@@ -1,30 +1,36 @@
-<a href="/">
-  <h2>MVC Example</h2>
-</a></br>
+<a href="/"><header>MVC Example</header></a>
+</br>
+
 {{#if message}}
 <p class="text-center text-danger">{{message}}</p>
 {{/if}}
-<a href="/products/update">Update Products</a>
-{{#each Stores}}
-{{#if hash}}
-<a href="/store/{{hash}}" + >{{{domain}}} Store Info</a>
+
+
+<main>
+  {{#if Stores}}
+  {{#each Stores}}
+    <a href="/store/{{hash}}" + >{{{domain}}} Store Info</a>
+  {{/each}}
+  {{else}}
+  <a href="/store/update">Connect Store</a>
 {{/if}}
-{{#else}}
+{{#if Products}}
+  <a href="/products/update">Update Products</a>
+    <h3>Products</h3>
+    {{#each Products}}
 
-{{/else}}
-{{/each}}
+      <h4><a href="{{_id}}">{{name}}</a></h4>
 
-<h3>Products</h3>
-{{#each Products}}
+      {{sku}}
 
-<h4><a href="{{_id}}">{{name}}</a></h4>
-
-{{sku}}
-
-{{type}}
-{{#each variants}}
-{{#each option_values}}
-<strong>{{option_display_name}}</strong>: <em>{{label}}</em>
-{{/each}}
-{{/each}}
-{{/each}}
+      {{type}}
+        {{#each variants}}
+          {{#each option_values}}
+          <strong>{{option_display_name}}</strong>: <em>{{label}}</em>
+          {{/each}}
+        {{/each}}
+    {{/each}}
+    {{else}}
+    <a href="/products/update">Pull Products from Connected Store</a>
+{{/if}}
+</main>

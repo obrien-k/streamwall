@@ -115,6 +115,7 @@ router.get('/products/update', (req, res) => {
                     })
                     
                   }
+  
                 const context = {}
                 context.data = g;
                 const newProduct = {}
@@ -185,7 +186,7 @@ router.get('/products/:id', (req, res) => {
   });
 });
 
-// These routes are actually useless, but could be used in future iterations.
+// These routes are placeholders but could be used in future iterations.
 
 router.post('/products/add', (req, res) => {
   let message = '';
