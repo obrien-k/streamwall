@@ -45,13 +45,7 @@ app.engine(
             Product = thisProduct;
             
        return("http://store-" + Store + ".mybigcommerce.com/cart.php?action=add&product_id=" + Product);
-    },
-    linkSku: function(thisStore, thisProduct) {
-      let Store = thisStore,
-          Product = thisProduct;
-          
-     return("<a href='http://store-" + Store + ".mybigcommerce.com/cart.php?action=add&sku=" + Product + "'>");
-  }
+    }
     }
   })
 );
@@ -64,10 +58,8 @@ app.use(productRoute);
 app.use(storeRoute);
 
 // ROUTES
-app.get('/', function(req, res) {
+app.get('/', function(res) {
   try {
-    console.log(req + 'requestVal');
-    
         Product.find({}, (err, allProducts) => {
           if (err) {
             console.log(err);
