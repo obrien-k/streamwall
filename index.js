@@ -1,20 +1,20 @@
 require('dotenv').config();
 
 const express = require('express'),
-  router = express.Router(),
-  BigCommerce = require('node-bigcommerce');
-  bodyParser = require('body-parser');
-  exphbs = require('express-handlebars');
-  mongoose = require('mongoose');
-  (app = express()),
-  (hbs = exphbs.create({
-    /* config */
-  }));
+      router = express.Router(),
+      BigCommerce = require('node-bigcommerce');
+      bodyParser = require('body-parser');
+      exphbs = require('express-handlebars');
+      mongoose = require('mongoose');
+      (app = express()),
+      (hbs = exphbs.create({
+        /* config */
+      }));
 
-  const productRoute = require('./routes/product');
-  const Product = require('./models/Product.js');  
-  const storeRoute = require('./routes/store');
-  const Store = require('./models/Store.js');
+const productRoute = require('./routes/product');
+const Product = require('./models/Product.js');  
+const storeRoute = require('./routes/store');
+const Store = require('./models/Store.js');
   
 
 const server = app.listen(process.env.PORT, () => {
@@ -40,9 +40,6 @@ app.engine(
   exphbs({
     extname: '.hbs',
     helpers: {
-      toJSON: function(object) {
-        return JSON.stringify(object);
-      },
       link: function(thisStore, thisProduct) {
         let Store = thisStore,
             Product = thisProduct;

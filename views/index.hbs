@@ -2,12 +2,12 @@
 </br>
 
 {{#if message}}
-<p class="text-center text-danger">{{message}}</p>
+  <p class="text-center text-danger">{{message}}</p>
 {{/if}}
 
 
 <main>
-  {{#if Stores}}
+{{#if Stores}}
   {{#each Stores}}
     <a href="/store/{{hash}}" + >{{{domain}}} Store Info</a>
   {{/each}}
