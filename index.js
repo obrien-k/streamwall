@@ -58,7 +58,7 @@ app.use(productRoute);
 app.use(storeRoute);
 
 // ROUTES
-app.get('/', function(res) {
+app.get('/', function(req, res) {
   try {
         Product.find({}, (err, allProducts) => {
           if (err) {
