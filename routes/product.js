@@ -78,7 +78,6 @@ router.get('/products/update', (req, res) => {
               return res;
             });
             
-           
             try {
                 const context = {}
                 context.data = s;
