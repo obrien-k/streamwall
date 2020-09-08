@@ -1,9 +1,9 @@
 [[streams]]
 city   = "Varied"
-label  = "yo"
-link   = "https://twitch.tv/woke"
-notes  = "Live protest streams from around the world."
-source = "woke.net"
+label  = "Yoo"
+link   = "https://twitch.tv/wuubi"
+notes  = "Live code/etc streams from around the world."
+source = "wuu.bi"
 
 [[streams]]
 kind  = "web"
