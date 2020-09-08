@@ -422,6 +422,13 @@ function App({ wsEndpoint, role }) {
     })
   }, [])
 
+  const setStreamRunning = useCallback((isStreamRunning) => {
+    send({
+      type: 'set-stream-running',
+      isStreamRunning,
+    })
+  }, [])
+
   const [newInvite, setNewInvite] = useState()
 
   const handleCreateInvite = useCallback(({ name, role }) => {
@@ -510,8 +517,10 @@ function App({ wsEndpoint, role }) {
         </StyledHeader>
         {delayState && (
           <StreamDelayBox
+            role={role}
             delayState={delayState}
             setStreamCensored={setStreamCensored}
+            setStreamRunning={setStreamRunning}
           />
         )}
         <StyledDataContainer isConnected={isConnected}>
@@ -571,6 +580,7 @@ function App({ wsEndpoint, role }) {
               Show stream debug tools
             </label>
           )}
+          <Facts />
         </StyledDataContainer>
       </Stack>
       <Stack flex="1" scroll={true} minHeight={200}>
@@ -661,10 +671,20 @@ const Stack = styled.div`
   ${({ minHeight }) => minHeight && `min-height: ${minHeight}px`};
 `
 
-function StreamDelayBox({ delayState, setStreamCensored }) {
+function StreamDelayBox({
+  role,
+  delayState,
+  setStreamCensored,
+  setStreamRunning,
+}) {
   const handleToggleStreamCensored = useCallback(() => {
     setStreamCensored(!delayState.isCensored)
   }, [delayState.isCensored, setStreamCensored])
+  const handleToggleStreamRunning = useCallback(() => {
+    if (!delayState.isStreamRunning || confirm('End stream?')) {
+      setStreamRunning(!delayState.isStreamRunning)
+    }
+  }, [delayState.isStreamRunning, setStreamRunning])
   let buttonText
   if (delayState.isConnected) {
     if (delayState.state.matches('censorship.censored.deactivating')) {
@@ -679,17 +699,25 @@ function StreamDelayBox({ delayState, setStreamCensored }) {
     <div>
       <StyledStreamDelayBox>
         <strong>Streamdelay</strong>
-        <span>{delayState.isConnected ? 'connected' : 'connecting...'}</span>
+        {!delayState.isConnected && <span>connecting...</span>}
+        {!delayState.isStreamRunning && <span>stream stopped</span>}
         {delayState.isConnected && (
           <>
             <span>delay: {delayState.delaySeconds}s</span>
-            <StyledButton
-              isActive={delayState.isCensored}
-              onClick={handleToggleStreamCensored}
-              tabIndex={1}
-            >
-              {buttonText}
-            </StyledButton>
+            {delayState.isStreamRunning && (
+              <StyledButton
+                isActive={delayState.isCensored}
+                onClick={handleToggleStreamCensored}
+                tabIndex={1}
+              >
+                {buttonText}
+              </StyledButton>
+            )}
+            {roleCan(role, 'set-stream-running') && (
+              <StyledButton onClick={handleToggleStreamRunning} tabIndex={1}>
+                {delayState.isStreamRunning ? 'End stream' : 'Start stream'}
+              </StyledButton>
+            )}
           </>
         )}
       </StyledStreamDelayBox>
@@ -1116,6 +1144,52 @@ function AuthTokenLine({ id, role, name, onDelete }) {
     </div>
   )
 }
+
+function Facts() {
+  return (
+    <StyledFacts>
+      <BLM>Black Lives Matter.</BLM>
+      <TRM>
+        Trans rights are <em>human rights.</em>
+      </TRM>
+      <TIN>Technology is not neutral.</TIN>
+    </StyledFacts>
+  )
+}
+
+const StyledFacts = styled.div`
+  display: flex;
+  margin: 4px 0;
+
+  & > * {
+    line-height: 26px;
+    margin-right: 0.5em;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+`
+
+const BLM = styled.div`
+  background: black;
+  color: white;
+`
+
+const TRM = styled.div`
+  background: linear-gradient(
+    to bottom,
+    #55cdfc 12%,
+    #f7a8b8 12%,
+    #f7a8b8 88%,
+    #55cdfc 88%
+  );
+  color: white;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+`
+
+const TIN = styled.div`
+  background: gray;
+  font-family: monospace;
+`
 
 function main() {
   const script = document.getElementById('main-script')
